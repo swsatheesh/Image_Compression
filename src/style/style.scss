@@ -1,0 +1,15 @@
+// Import bootstrap-sass
+// @import 'variables';
+// @import 'node_modules/font-awesome/scss/font-awesome';
+
+
+$fa-font-path: "../../node_modules/font-awesome/fonts";
+@import "../../node_modules/font-awesome/scss/font-awesome";
+
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets';
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+// @import 'node_modules/font-awesome/scss/font-awesome';
+
+@import 'font';
+@import 'global';
+@import 'nav_bar';
