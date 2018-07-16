@@ -12,7 +12,7 @@ if (!fs.existsSync(dir)){
 }
 
 import resizeImage from './read_write_stream';
-import imageProcessControl from './image_process_control';
+// import imageProcessControl from './image_process_control';
 
 var Storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -37,10 +37,11 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.post('/files', upload.single('file'), (req, res) => {
   const { body: { details }, file } = req;
-  const { width, height } = JSON.parse(details);
+  const { width, height, format } = JSON.parse(details);
   // imageProcessControl(`./original_files/${file.filename}`, [[width, height, file.filename]]);
-  resizeImage(`./original_files/${file.filename}`, [[width, height, file.filename]])
+  resizeImage(`./original_files/${file.filename}`, [[width, height, format, file.filename]])
     .then((thumbnailPaths) => {
+      console.log(thumbnailPaths);
       return res.end(thumbnailPaths[0]);
     })
     .catch((err) => {

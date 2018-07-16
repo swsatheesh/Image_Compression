@@ -9,7 +9,7 @@ module.exports = function resize(inputStream, width, height) {
   // }
 
   if (width || height) {
-      transform = transform.resize(width, height);
+      transform = transform.resize(width, height).png().toBuffer((err, data, info) => { if(err) console.log(err); });
   }
 
   return new Promise((resolve, reject) => {

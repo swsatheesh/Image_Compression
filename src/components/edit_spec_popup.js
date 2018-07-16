@@ -1,11 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Dropdown from 'react-dropdown';
 
 import { popupToggle } from '../actions/toggle_popup';
 
 import { updateImageSpech } from '../actions/image_spec_update';
 
-const EditSpecPopup = ({ dispatch, imageUrl, file, imageWidth, imageHeight, selectedImage }) => (
+const options = [
+    { value: 'image/jpeg', label: 'JPG' },
+    { value: 'image/png', label: 'PNG' },
+];
+
+const EditSpecPopup = ({ dispatch, imageUrl, file, imageWidth, imageHeight, imageFormat, selectedImage }) => (
     <div id="image_edit" class="modal" role="dialog">
         <div className={'back-drop'} />
         <div class="modal-dialog modal-lg">
@@ -43,13 +49,23 @@ const EditSpecPopup = ({ dispatch, imageUrl, file, imageWidth, imageHeight, sele
                             </div>
                             <div class="text-info">* Leave the height input box empty, when you wanna set the image height by default.</div>
                         </div>
+                        <div className={'col-md-12 image-spec-format'}>
+                            <div className={'form-group col-md-6 padding-left-none'}>
+                                <label for="image-width">Format: </label>
+                                <Dropdown
+                                    options={options}
+                                    value={imageFormat}
+                                    onChange={(e) => dispatch(updateImageSpech('format', e.value, selectedImage))}
+                                    placeholder="Select an option"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onClick={() => dispatch(popupToggle())} class="btn btn-primary" data-dismiss="modal">Done!!!</button>
                 </div>
             </div>
-
         </div>
     </div>
 );
@@ -57,12 +73,14 @@ const EditSpecPopup = ({ dispatch, imageUrl, file, imageWidth, imageHeight, sele
 function mapStateToProps({ imageData, popup }) {
     const { selectedImage } = popup;
     const { imageUrl, file, imageSpec } = imageData[selectedImage];
+    const imageFormat = options.filter((image) => image.value === imageSpec.format)[0];
     return ({
         selectedImage,
         imageUrl,
         file,
         imageWidth: imageSpec.width,
-        imageHeight: imageSpec.height
+        imageHeight: imageSpec.height,
+        imageFormat
     });
 }
 

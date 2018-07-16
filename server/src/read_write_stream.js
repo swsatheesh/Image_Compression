@@ -8,20 +8,15 @@ const readStream = (imageURL) => fs.createReadStream(imageURL);
 const writeStream = (outPath) => fs.createWriteStream(outPath);
 
 function imageProcessingAndSave(inputImg, imageInfo) {
-    // var resizeTransform = sharp().resize(imageInfo[0], imageInfo[1]).max();
     return new Promise((resolve, reject) => {
-        const outPath = `${resultImageStoragePath}${ imageInfo[2] }`;
+        const outPath = `${resultImageStoragePath}${imageInfo[3].split('.').slice(0, -1).join('.')}.${imageInfo[2].replace('image/', '')}`;
         const creatNewImage = writeStream(outPath);
         const resolveOutputPath = () => resolve(outPath);
-        // inputImg.pipe(resizeTransform).pipe(creatNewImage);
-        // imageResize(inputImg, imageInfo[0], imageInfo[1], resolveOutputPath).pipe(creatNewImage);
-        imageResize(inputImg, imageInfo[0], imageInfo[1]).then((processedStream) => {
+        imageResize(inputImg, imageInfo[0], imageInfo[1], imageInfo[2]).then((processedStream) => {
             processedStream.pipe(creatNewImage);
             resolveOutputPath();
         });
-        // inputImg.on('end', () => resolve(outPath));
         creatNewImage.on('error', reject);
-        // resizeTransform.on('error', reject);
     });
 }
 

@@ -48,7 +48,7 @@ class SelectedImage extends Component {
                             role="button" 
                             className={'btn btn-primary'} 
                             href={`../../${downloadLink}`} 
-                            download={fileName}
+                            download={downloadLink.split('/').pop()}
                         >download</a>
                     ) : null
                 }

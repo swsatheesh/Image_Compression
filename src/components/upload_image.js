@@ -14,18 +14,27 @@ class UploadImage extends Component {
         let reader = new FileReader();
         let file = event.target.files[0];
 
-        reader.onloadend = () => {
-            var image = new Image();
-            image.src = reader.result;
-            image.onload = () => {
-                const imageSpec = {
-                    width: image.width,
-                    height: image.height
-                }
-                this.props.dispatch(selectedImage(reader.result, file.name, this.imageUpload.files[0], imageSpec));
-            };
+        if (file && file.type.match('image.*')) {
+            reader.onloadend = () => {
+                var image = new Image();
+                image.src = reader.result;
+                image.onload = () => {
+                    const imageSpec = {
+                        width: image.width,
+                        height: image.height,
+                        format: file.type
+                    }
+                    this.props.dispatch(selectedImage(reader.result, file.name, this.imageUpload.files[0], imageSpec));
+                };
+            }
+            reader.readAsDataURL(file);
+            reader.onerror = (err) => {
+                console.log(err);
+            }
+        } else {
+            alert('File format not supporting!!!');
         }
-        reader.readAsDataURL(file)
+        
     }
     // uploadHandler() {
     //     event.preventDefault();
